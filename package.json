@@ -7,11 +7,12 @@
     "license": "MIT",
     "scripts": {
         "start": "FLASK_APP=api/index.py flask run",
-        "format": "black api/*.py",
+        "format": "black api/*.py && NODE_OPTIONS=--max_old_space_size=4096 prettier --write '{src,data}/**/*.{js,json}'",
         "postinstall": "(cd api/ && pip3 install -r requirements.txt)",
         "deploy": "vercel"
     },
     "devDependencies": {
+        "db-migrate": "^0.11.11",
         "prettier": "^2.0.5"
     }
 }
