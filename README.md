@@ -1,4 +1,4 @@
 # Earthing
 
-<img src="media/apple.png" alt="Apple Store" />
-<img src="media/google.png" alt="Google Store" />
+<img src="media/apple.png" width="100" alt="Apple Store" />
+<img src="media/google.png" width="100" alt="Google Store" />
