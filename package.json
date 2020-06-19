@@ -6,6 +6,7 @@
     "author": "Adam Timberlake <adam.timberlake@gmail.com>",
     "license": "MIT",
     "scripts": {
+        "postinstall": "(cd api/ && pip3 install -r requirements.txt)",
         "format": "black api/*.py"
     },
     "devDependencies": {}
