@@ -6,8 +6,9 @@
     "author": "Adam Timberlake <adam.timberlake@gmail.com>",
     "license": "MIT",
     "scripts": {
-        "postinstall": "(cd api/ && pip3 install -r requirements.txt)",
+        "start": "FLASK_APP=api/index.py flask run",
         "format": "black api/*.py",
+        "postinstall": "(cd api/ && pip3 install -r requirements.txt)",
         "deploy": "vercel"
     },
     "devDependencies": {
