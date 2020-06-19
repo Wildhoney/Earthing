@@ -1,4 +1,6 @@
 # Earthing
 
-<img src="media/apple.png" width="100" alt="Apple Store" />
-<img src="media/google.png" width="100" alt="Google Store" />
+<div style="display: grid; grid-template-columns: auto auto; grid-gap: 10px;">
+    <img src="media/apple.png" width="200" alt="Apple Store" />
+    <img src="media/google.png" width="200" alt="Google Store" />
+</div>
