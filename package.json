@@ -7,12 +7,15 @@
     "license": "MIT",
     "scripts": {
         "start": "FLASK_APP=api/index.py flask run",
-        "format": "black api/*.py && NODE_OPTIONS=--max_old_space_size=4096 prettier --write '{src,data}/**/*.{js,json}'",
+        "format": "black api/*.py && NODE_OPTIONS=--max_old_space_size=4096 prettier --write '{src,data,migrations}/**/*.{js,json}'",
         "postinstall": "(cd api/ && pip3 install -r requirements.txt)",
-        "deploy": "vercel"
+        "deploy": "vercel",
+        "migrate": "npx db-migrate -e prod up",
+        "unmigrate": "npx db-migrate -e prod reset"
     },
     "devDependencies": {
         "db-migrate": "^0.11.11",
+        "db-migrate-pg": "^1.2.2",
         "prettier": "^2.0.5"
     }
 }

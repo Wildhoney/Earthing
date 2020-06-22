@@ -7,6 +7,7 @@ app = Flask(__name__)
 # SELECT ST_Expand(ST_GeomFromText(@linestring, 2163), 5)
 # SELECT ST_Intersects(polygon, @polygon::geometry);
 
+# SELECT name FROM countries WHERE ST_Intersects(ST_MakePoint(0.1278, 51.5074), coordinates)
 
 @app.route("/")
 def catch_all():
