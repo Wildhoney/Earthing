@@ -1,4 +1,5 @@
 .env
+.expo
 .vercel
 .history
 node_modules
