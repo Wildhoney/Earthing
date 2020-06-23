@@ -21,14 +21,14 @@ exports.up = function (db) {
         .createTable('countries', {
             id: { type: 'int', primaryKey: true, autoIncrement: true },
             name: { type: 'string' },
-            coordinates: { type: 'geography' },
+            area: { type: 'geography' },
         })
         .then(() =>
             countries.features.forEach((feature) =>
-                db.runSql(
-                    'INSERT INTO countries (name, coordinates) VALUES (?, ST_GeomFromGeoJSON(?))',
-                    [feature.properties.ADMIN, JSON.stringify(feature.geometry)]
-                )
+                db.runSql('INSERT INTO countries (name, area) VALUES (?, ST_GeomFromGeoJSON(?))', [
+                    feature.properties.ADMIN,
+                    JSON.stringify(feature.geometry),
+                ])
             )
         );
 };
