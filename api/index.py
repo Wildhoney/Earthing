@@ -1,15 +1,38 @@
 from flask import Flask
-from geopy import distance
+import psycopg2
 
 app = Flask(__name__)
+conn = psycopg2.connect("")
 
-# SELECT ST_AsText(ST_MakeLine(ST_MakePoint(0.1278, 51.5074), ST_MakePoint(49.614232010011484, 39.202349184488774)))
-# SELECT ST_Expand(ST_GeomFromText(@linestring, 2163), 5)
-# SELECT ST_Intersects(polygon, @polygon::geometry);
 
-# SELECT name FROM countries WHERE ST_Intersects(ST_MakePoint(0.1278, 51.5074), coordinates)
+@app.route("/<latitude>/<longitude>/<bearing>")
+def get(latitude, longitude, bearing):
 
-@app.route("/")
-def catch_all():
-    position = distance.distance(miles=2500).destination((51.5074, 0.1278), 90)
-    return {"lat": position.latitude, "lng": position.longitude}
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        SELECT
+            name,
+            ST_Distance(ST_SetSRID(ST_MakePoint({longitude}, {latitude}), 4326), area) AS distance
+        FROM countries
+        WHERE
+            ST_Intersects(ST_Transform(
+            ST_Segmentize(
+                ST_MakeLine(
+                ST_Transform(ST_SetSRID(ST_MakePoint({longitude}, {latitude}), 4326), 953027),
+                ST_Transform(ST_SetSRID(ST_AsText(ST_Project(ST_MakePoint(0.1278, 51.5074), 10000000, radians({bearing}))), 4326), 953027)
+                ), 
+            1000000), 
+            4326), area)
+        ORDER BY ST_Distance(ST_SetSRID(ST_MakePoint({longitude}, {latitude}), 4326), area);
+    """.format(
+            latitude=latitude, longitude=longitude, bearing=bearing
+        )
+    )
+
+    return {
+        "countries": [
+            {"name": name, "distance": distance}
+            for (name, distance) in cursor.fetchall()
+        ]
+    }
