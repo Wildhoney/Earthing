@@ -20,11 +20,15 @@ conn = psycopg2.connect(
 def get_sql(latitude, longitude, bearing):
     return """
         SELECT
+            ARRAY_AGG(id) AS pks,
             name,
-            ST_Distance(
-                ST_SetSRID(ST_MakePoint({longitude}, {latitude}), 4326),
-                area
-            ) AS distance
+            COUNT(*) AS occurrences,
+            MIN(
+                ST_Distance(
+                    ST_SetSRID(ST_MakePoint({longitude}, {latitude}), 4326),
+                    area
+                )
+            ) AS minumum_distance
         FROM
             countries
         WHERE
@@ -136,11 +140,10 @@ def get_sql(latitude, longitude, bearing):
                     4326
                 )
             )
+        GROUP BY
+            name
         ORDER BY
-            ST_Distance(
-                ST_SetSRID(ST_MakePoint({longitude}, {latitude}), 4326),
-                area
-            );
+            minumum_distance
     """.format(
         latitude=latitude, longitude=longitude, bearing=bearing
     )
@@ -155,7 +158,12 @@ def get(latitude, longitude, bearing):
 
     return {
         "countries": [
-            {"name": name, "distance": distance}
-            for (name, distance) in cursor.fetchall()
+            {
+                "pks": pks,
+                "name": name,
+                "occurrences": occurrences,
+                "minumum_distance": minumum_distance,
+            }
+            for (pks, name, occurrences, minumum_distance) in cursor.fetchall()
         ]
     }
