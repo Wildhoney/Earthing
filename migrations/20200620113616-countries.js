@@ -17,6 +17,13 @@ exports.setup = function (options, seedLink) {
 exports.up = function (db) {
     const countries = require('../data/countries.json');
 
+    function asPolygon(coordinates) {
+        return JSON.parse(`{
+            "type": "Polygon",
+            "coordinates": [[${coordinates.map((coordinates) => `[${coordinates.join(', ')}]`)}]]
+        }`);
+    }
+
     return db
         .createTable('countries', {
             id: { type: 'int', primaryKey: true, autoIncrement: true },
@@ -24,12 +31,23 @@ exports.up = function (db) {
             area: { type: 'geography' },
         })
         .then(() =>
-            countries.features.forEach((feature) =>
-                db.runSql('INSERT INTO countries (name, area) VALUES (?, ST_GeomFromGeoJSON(?))', [
-                    feature.properties.ADMIN,
-                    JSON.stringify(feature.geometry),
-                ])
-            )
+            countries.features.forEach((feature) => {
+                if (feature.geometry.type === 'MultiPolygon') {
+                    return feature.geometry.coordinates.map((coordinates) => {
+                        return coordinates.map((coordinates) => {
+                            return db.runSql(
+                                'INSERT INTO countries (name, area) VALUES (?, ST_GeomFromGeoJSON(?))',
+                                [feature.properties.ADMIN, JSON.stringify(asPolygon(coordinates))]
+                            );
+                        });
+                    });
+                }
+
+                return db.runSql(
+                    'INSERT INTO countries (name, area) VALUES (?, ST_GeomFromGeoJSON(?))',
+                    [feature.properties.ADMIN, feature.geometry]
+                );
+            })
         );
 };
 
