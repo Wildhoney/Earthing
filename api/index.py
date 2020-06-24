@@ -17,31 +17,141 @@ conn = psycopg2.connect(
 )
 
 
-@app.route("/<latitude>/<longitude>/<bearing>")
-def get(latitude, longitude, bearing):
-    cursor = conn.cursor()
-    cursor.execute(
-        """
+def get_sql(latitude, longitude, bearing):
+    return """
         SELECT
             name,
-            ST_Distance(ST_SetSRID(ST_MakePoint({longitude}, {latitude}), 4326), area) AS distance
-        FROM countries
-        WHERE
-            ST_Intersects(ST_Transform(
-            ST_Segmentize(
-                ST_MakeLine(
-                -- ST_Transform(ST_SetSRID(ST_MakePoint({longitude}, {latitude}), 4326), 953027),
-                -- ST_Transform(ST_SetSRID(ST_AsText(ST_Project(ST_MakePoint(0.1278, 51.5074), 10000000, radians({bearing}))), 4326), 953027)
+            ST_Distance(
                 ST_SetSRID(ST_MakePoint({longitude}, {latitude}), 4326),
-                ST_SetSRID(ST_AsText(ST_Project(ST_MakePoint(0.1278, 51.5074), 10000000, radians({bearing}))), 4326)
-                ), 
-            1000000), 
-            4326), area)
-        ORDER BY ST_Distance(ST_SetSRID(ST_MakePoint({longitude}, {latitude}), 4326), area);
+                area
+            ) AS distance
+        FROM
+            countries
+        WHERE
+            ST_Intersects(
+                area,
+                ST_SetSRID(
+                    ST_MakeLine(
+                        ST_Project(
+                            ST_SetSRID(ST_MakePoint({longitude}, {latitude}), 4326) :: geometry,
+                            0,
+                            RADIANS({bearing})
+                        ) :: geometry,
+                        ST_Project(
+                            ST_SetSRID(ST_MakePoint({longitude}, {latitude}), 4326) :: geometry,
+                            6671700,
+                            RADIANS({bearing})
+                        ) :: geometry
+                    ),
+                    4326
+                )
+            )
+            OR ST_Intersects(
+                area,
+                ST_SetSRID(
+                    ST_MakeLine(
+                        ST_Project(
+                            ST_SetSRID(ST_MakePoint({longitude}, {latitude}), 4326) :: geometry,
+                            6671700,
+                            RADIANS({bearing})
+                        ) :: geometry,
+                        ST_Project(
+                            ST_SetSRID(ST_MakePoint({longitude}, {latitude}), 4326) :: geometry,
+                            6671700 * 2,
+                            RADIANS({bearing})
+                        ) :: geometry
+                    ),
+                    4326
+                )
+            )
+            OR ST_Intersects(
+                area,
+                ST_SetSRID(
+                    ST_MakeLine(
+                        ST_Project(
+                            ST_SetSRID(ST_MakePoint({longitude}, {latitude}), 4326) :: geometry,
+                            6671700 * 2,
+                            RADIANS({bearing})
+                        ) :: geometry,
+                        ST_Project(
+                            ST_SetSRID(ST_MakePoint({longitude}, {latitude}), 4326) :: geometry,
+                            6671700 * 3,
+                            RADIANS({bearing})
+                        ) :: geometry
+                    ),
+                    4326
+                )
+            )
+            OR ST_Intersects(
+                area,
+                ST_SetSRID(
+                    ST_MakeLine(
+                        ST_Project(
+                            ST_SetSRID(ST_MakePoint({longitude}, {latitude}), 4326) :: geometry,
+                            0,
+                            RADIANS({bearing} + 180)
+                        ) :: geometry,
+                        ST_Project(
+                            ST_SetSRID(ST_MakePoint({longitude}, {latitude}), 4326) :: geometry,
+                            6671700,
+                            RADIANS({bearing} + 180)
+                        ) :: geometry
+                    ),
+                    4326
+                )
+            )
+            OR ST_Intersects(
+                area,
+                ST_SetSRID(
+                    ST_MakeLine(
+                        ST_Project(
+                            ST_SetSRID(ST_MakePoint({longitude}, {latitude}), 4326) :: geometry,
+                            6671700,
+                            RADIANS({bearing} + 180)
+                        ) :: geometry,
+                        ST_Project(
+                            ST_SetSRID(ST_MakePoint({longitude}, {latitude}), 4326) :: geometry,
+                            6671700 * 2,
+                            RADIANS({bearing} + 180)
+                        ) :: geometry
+                    ),
+                    4326
+                )
+            )
+            OR ST_Intersects(
+                area,
+                ST_SetSRID(
+                    ST_MakeLine(
+                        ST_Project(
+                            ST_SetSRID(ST_MakePoint({longitude}, {latitude}), 4326) :: geometry,
+                            6671700 * 2,
+                            RADIANS({bearing} + 180)
+                        ) :: geometry,
+                        ST_Project(
+                            ST_SetSRID(ST_MakePoint({longitude}, {latitude}), 4326) :: geometry,
+                            6671700 * 3,
+                            RADIANS({bearing} + 180)
+                        ) :: geometry
+                    ),
+                    4326
+                )
+            )
+        ORDER BY
+            ST_Distance(
+                ST_SetSRID(ST_MakePoint({longitude}, {latitude}), 4326),
+                area
+            );
     """.format(
-            latitude=latitude, longitude=longitude, bearing=bearing
-        )
+        latitude=latitude, longitude=longitude, bearing=bearing
     )
+
+
+@app.route("/<latitude>/<longitude>/<bearing>")
+@app.route("/api/<latitude>/<longitude>/<bearing>")
+def get(latitude, longitude, bearing):
+    cursor = conn.cursor()
+    sql = get_sql(latitude, longitude, bearing)
+    cursor.execute(sql)
 
     return {
         "countries": [
