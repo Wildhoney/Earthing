@@ -7,7 +7,7 @@
     "license": "MIT",
     "scripts": {
         "start": "concurrently -k 'FLASK_APP=api/index.py flask run' 'cd src/ && yarn start'",
-        "format": "black api/*.py && NODE_OPTIONS=--max_old_space_size=4096 prettier --write '{src,data,migrations}/**/*.{js,json}'",
+        "format": "black api/*.py && NODE_OPTIONS=--max_old_space_size=4096 prettier --write '{src,data,migrations}/**/*.{js,json,ts,tsx}'",
         "postinstall": "(cd api/ && pip3 install -r requirements.txt) && (cd src/ && yarn)",
         "deploy": "vercel",
         "migrate": "npx db-migrate -e prod up",
