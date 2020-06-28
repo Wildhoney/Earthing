@@ -4,14 +4,9 @@ import { View, Text, Image } from 'react-native';
 import numeral from 'numeral';
 import style from './styles';
 import * as utils from './utils';
+import * as t from './types';
 
-export type Model = { name: string; minimumDistance: number };
-
-type Props = {
-    model: Model;
-};
-
-export default function Place({ model }: Props) {
+export default function Place({ model }: t.Props) {
     return (
         <View style={style.container}>
             <Image style={style.flag} source={utils.getFlag(model.name)} />

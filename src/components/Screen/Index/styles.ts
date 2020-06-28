@@ -1,8 +1,7 @@
 import { StyleSheet } from 'react-native';
+import * as t from './types';
 
-type Styles = { isLoading: boolean };
-
-export default function getStyles({ isLoading }: Styles) {
+export default function getStyles({ isLoading }: t.Styles) {
     return StyleSheet.create({
         container: {
             flex: 1,
