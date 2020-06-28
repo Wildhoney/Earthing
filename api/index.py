@@ -1,11 +1,13 @@
 import os
 import psycopg2
 from flask import Flask
+from flask_cors import CORS
 from dotenv import load_dotenv
 
 load_dotenv()
 
 app = Flask(__name__)
+cors = CORS(app, resources={r"*": {"origins": "*"}})
 
 conn = psycopg2.connect(
     "host={db_host} dbname={db_name} user={db_username} password={db_password}".format(
@@ -28,7 +30,7 @@ def get_sql(latitude, longitude, bearing):
                     ST_SetSRID(ST_MakePoint({longitude}, {latitude}), 4326),
                     area
                 )
-            ) AS minumum_distance
+            ) AS minimum_distance
         FROM
             countries
         WHERE
@@ -143,7 +145,7 @@ def get_sql(latitude, longitude, bearing):
         GROUP BY
             name
         ORDER BY
-            minumum_distance
+            minimum_distance
     """.format(
         latitude=latitude, longitude=longitude, bearing=bearing
     )
@@ -162,8 +164,8 @@ def get(latitude, longitude, bearing):
                 "pks": pks,
                 "name": name,
                 "occurrences": occurrences,
-                "minumum_distance": minumum_distance,
+                "minimum_distance": minimum_distance,
             }
-            for (pks, name, occurrences, minumum_distance) in cursor.fetchall()
+            for (pks, name, occurrences, minimum_distance) in cursor.fetchall()
         ]
     }
