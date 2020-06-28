@@ -1,15 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useAsync } from 'react-use';
 import { camelizeKeys } from 'humps';
-import { View } from 'react-native';
-import style from './styles';
-import Place from '../../Place';
-
-type Place = { name: string };
+import { SafeAreaView } from 'react-native';
+import getStyles from './styles';
+import Place, { Model as PlaceModel } from '../../Place';
+import Loading from '../../Loading';
+import Error from '../../Error';
 
 export default function App() {
-    const [active, setActive] = useState(null);
-
     const places = useAsync(async () => {
         const response = await fetch('http://localhost:5000/51.5074/0.1278/90').then((response) =>
             response.json()
@@ -17,17 +15,23 @@ export default function App() {
         return camelizeKeys(response);
     });
 
+    const style = getStyles({ isLoading: places.loading });
+
     return (
-        <View style={style.container}>
-            {!places.loading &&
-                places.value.countries.map((place: Place) => (
-                    <Place
-                        key={place.name}
-                        model={place}
-                        isActive={place.name === active}
-                        onClick={setActive}
-                    />
-                ))}
-        </View>
+        <SafeAreaView style={style.container}>
+            {places.error ? (
+                <Error />
+            ) : (
+                <>
+                    {places.loading ? (
+                        <Loading />
+                    ) : (
+                        places.value.countries
+                            .filter((place: PlaceModel) => place.minimumDistance > 0)
+                            .map((place: PlaceModel) => <Place key={place.name} model={place} />)
+                    )}
+                </>
+            )}
+        </SafeAreaView>
     );
 }

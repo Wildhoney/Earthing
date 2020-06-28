@@ -2,6 +2,7 @@ import React from 'react';
 import Index from './components/Screen/Index';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import Title from './components/Title';
 
 const Stack = createStackNavigator();
 
@@ -13,7 +14,8 @@ export default function App() {
                     name="Index"
                     component={Index}
                     options={{
-                        title: 'Places',
+                        title: '',
+                        headerLeft: () => <Title />,
                     }}
                 />
             </Stack.Navigator>

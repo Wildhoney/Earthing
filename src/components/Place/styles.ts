@@ -1,34 +1,37 @@
 import { StyleSheet } from 'react-native';
 
-type Styles = { isActive: boolean };
-
-export default function getStyles({ isActive }: Styles) {
-    return StyleSheet.create({
-        container: {
-            backgroundColor: 'lightgray',
-            flex: isActive ? 3 : 1,
-            textShadow: '1px 1px 1px #333',
-            marginBottom: 5,
-            marginLeft: 5,
-            marginRight: 5,
-            minHeight: isActive ? 500 : 200,
-        },
-        background: {
-            padding: 20,
-            flex: 1,
-            display: 'flex',
-            alignItems: 'flex-end',
-            justifyContent: 'flex-end',
-        },
-        name: {
-            color: 'white',
-            fontSize: 24,
-            fontWeight: 'bold',
-            textTransform: 'capitalize',
-        },
-        distance: {
-            color: 'white',
-            fontSize: 12,
-        },
-    });
-}
+export default StyleSheet.create({
+    container: {
+        flex: 1,
+        display: 'flex',
+        alignItems: 'center',
+        flexDirection: 'row',
+        marginLeft: 20,
+        marginRight: 20,
+        minHeight: 100,
+        boxShadow: '0 5px 5px -5px rgba(0, 0, 0, 0.25)',
+    },
+    flag: {
+        width: 55,
+        height: 35,
+        marginLeft: 20,
+        marginRight: 20,
+    },
+    name: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        textTransform: 'uppercase',
+        backgroundColor: 'black',
+        color: 'white',
+        borderRadius: 3,
+        paddingLeft: 5,
+        paddingRight: 5,
+        paddingTop: 2,
+        paddingBottom: 2,
+    },
+    distance: {
+        fontSize: 12,
+        color: '#999',
+        marginTop: 3,
+    },
+});
