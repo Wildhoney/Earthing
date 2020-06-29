@@ -24,6 +24,7 @@ def get_sql(latitude, longitude, bearing):
         SELECT
             ARRAY_AGG(id) AS pks,
             name,
+            code,
             COUNT(*) AS occurrences,
             MIN(
                 ST_Distance(
@@ -143,7 +144,7 @@ def get_sql(latitude, longitude, bearing):
                 )
             )
         GROUP BY
-            name
+            name, code
         ORDER BY
             minimum_distance
     """.format(
@@ -163,9 +164,10 @@ def get(latitude, longitude, bearing):
             {
                 "pks": pks,
                 "name": name,
+                "code": code,
                 "occurrences": occurrences,
                 "minimum_distance": minimum_distance,
             }
-            for (pks, name, occurrences, minimum_distance) in cursor.fetchall()
+            for (pks, name, code, occurrences, minimum_distance) in cursor.fetchall()
         ]
     }
