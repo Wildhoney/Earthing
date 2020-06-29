@@ -9,7 +9,10 @@ import * as t from './types';
 export default function Place({ model }: t.Props) {
     return (
         <View style={style.container}>
-            <Image style={style.flag} source={utils.getFlag(model.name)} />
+            <Image
+                style={style.flag}
+                source={{ uri: `https://www.countryflags.io/${model.code}/flat/64.png` }}
+            />
 
             <View>
                 <Text style={style.name}>{model.name}</Text>
@@ -24,6 +27,7 @@ export default function Place({ model }: t.Props) {
 Place.propTypes = {
     model: PropTypes.shape({
         name: PropTypes.string.isRequired,
+        code: PropTypes.string.isRequired,
         minimumDistance: PropTypes.number.isRequired,
     }).isRequired,
 };

@@ -9,7 +9,7 @@ export default StyleSheet.create({
         marginLeft: 20,
         marginRight: 20,
         minHeight: 100,
-        boxShadow: '0 5px 5px -5px rgba(0, 0, 0, 0.25)',
+        // boxShadow: '0 5px 5px -5px rgba(0, 0, 0, 0.25)',
     },
     flag: {
         width: 55,

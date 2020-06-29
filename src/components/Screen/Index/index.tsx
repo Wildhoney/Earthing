@@ -1,13 +1,13 @@
 import React from 'react';
-import { useAsync } from 'react-use';
+import useAsync from 'react-use/lib/useAsync';
 import { camelizeKeys } from 'humps';
-import { SafeAreaView } from 'react-native';
-import getStyles from './styles';
+import { SafeAreaView, Text } from 'react-native';
 import Place from '../../Place';
 import { Model as PlaceModel } from '../../Place/types';
 import Loading from '../../Loading';
 import Error from '../../Error';
 import * as t from './types';
+import getStyles from './styles';
 
 export default function App() {
     const places: t.Places = useAsync(async () => {
@@ -21,16 +21,20 @@ export default function App() {
 
     return (
         <SafeAreaView style={style.container}>
-            {places.error || (!places.loading && places.value?.countries == null) ? (
-                <Error />
+            {places.loading ? (
+                <Loading />
             ) : (
                 <>
-                    {places.loading ? (
-                        <Loading />
+                    {places.error ? (
+                        <Error />
                     ) : (
-                        places.value.countries
-                            .filter((place: PlaceModel) => place.minimumDistance > 0)
-                            .map((place: PlaceModel) => <Place key={place.name} model={place} />)
+                        <>
+                            {places.value.countries
+                                .filter((place: PlaceModel) => place.minimumDistance > 0)
+                                .map((place: PlaceModel) => (
+                                    <Place key={place.name} model={place} />
+                                ))}
+                        </>
                     )}
                 </>
             )}

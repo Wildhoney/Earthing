@@ -33,6 +33,8 @@ export function getFlag(name: string): { uri: string } {
                 return require('../../assets/flags/united-arab-emirates.svg');
             case 'United Kingdom':
                 return require('../../assets/flags/united-kingdom.svg');
+            default:
+                return require('../../assets/flags/united-kingdom.svg');
         }
     }
 

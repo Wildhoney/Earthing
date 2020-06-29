@@ -1,24 +1,12 @@
 import React from 'react';
-import Index from './components/Screen/Index';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import Title from './components/Title';
-
-const Stack = createStackNavigator();
+import { StatusBar } from 'expo-status-bar';
+import Layout from './components/Layout';
 
 export default function App() {
     return (
-        <NavigationContainer>
-            <Stack.Navigator>
-                <Stack.Screen
-                    name="Index"
-                    component={Index}
-                    options={{
-                        title: '',
-                        headerLeft: () => <Title />,
-                    }}
-                />
-            </Stack.Navigator>
-        </NavigationContainer>
+        <>
+            <Layout />
+            <StatusBar style="auto" />
+        </>
     );
 }

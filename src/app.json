@@ -1,8 +1,7 @@
 {
     "expo": {
-        "name": "earthing",
-        "slug": "earthing",
-        "platforms": ["ios", "android", "web"],
+        "name": "src",
+        "slug": "src",
         "version": "1.0.0",
         "orientation": "portrait",
         "icon": "./assets/icon.png",
@@ -17,6 +16,9 @@
         "assetBundlePatterns": ["**/*"],
         "ios": {
             "supportsTablet": true
+        },
+        "web": {
+            "favicon": "./assets/favicon.png"
         }
     }
 }
