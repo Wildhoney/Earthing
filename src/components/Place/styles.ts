@@ -6,10 +6,11 @@ export default StyleSheet.create({
         display: 'flex',
         alignItems: 'center',
         flexDirection: 'row',
-        marginLeft: 20,
+        marginLeft: 10,
         marginRight: 20,
         minHeight: 100,
-        // boxShadow: '0 5px 5px -5px rgba(0, 0, 0, 0.25)',
+        borderBottomWidth: 1,
+        borderBottomColor: 'lightgray',
     },
     flag: {
         width: 55,

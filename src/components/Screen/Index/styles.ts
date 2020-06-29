@@ -10,5 +10,8 @@ export default function getStyles({ isLoading }: t.Styles) {
             alignItems: isLoading ? 'center' : undefined,
             justifyContent: isLoading ? 'center' : undefined,
         },
+        scroll: {
+            flex: 1,
+        },
     });
 }

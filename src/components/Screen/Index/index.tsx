@@ -1,7 +1,7 @@
 import React from 'react';
 import useAsync from 'react-use/lib/useAsync';
 import { camelizeKeys } from 'humps';
-import { SafeAreaView, Text } from 'react-native';
+import { SafeAreaView, Text, ScrollView } from 'react-native';
 import Place from '../../Place';
 import { Model as PlaceModel } from '../../Place/types';
 import Loading from '../../Loading';
@@ -28,13 +28,13 @@ export default function App() {
                     {places.error ? (
                         <Error />
                     ) : (
-                        <>
+                        <ScrollView style={style.scroll}>
                             {places.value.countries
                                 .filter((place: PlaceModel) => place.minimumDistance > 0)
                                 .map((place: PlaceModel) => (
                                     <Place key={place.name} model={place} />
                                 ))}
-                        </>
+                        </ScrollView>
                     )}
                 </>
             )}
