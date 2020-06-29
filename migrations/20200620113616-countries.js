@@ -17,7 +17,7 @@ exports.setup = function (options, seedLink) {
 exports.up = function (db) {
     const countries = require('../data/countries.json');
 
-    function asPolygon(coordinates) {
+    function toPolygon(coordinates) {
         return JSON.parse(`{
             "type": "Polygon",
             "coordinates": [[${coordinates.map((coordinates) => `[${coordinates.join(', ')}]`)}]]
@@ -28,6 +28,7 @@ exports.up = function (db) {
         .createTable('countries', {
             id: { type: 'int', primaryKey: true, autoIncrement: true },
             name: { type: 'string' },
+            code: { type: 'string' },
             area: { type: 'geography' },
         })
         .then(() =>
@@ -36,16 +37,20 @@ exports.up = function (db) {
                     return feature.geometry.coordinates.map((coordinates) => {
                         return coordinates.map((coordinates) => {
                             return db.runSql(
-                                'INSERT INTO countries (name, area) VALUES (?, ST_GeomFromGeoJSON(?))',
-                                [feature.properties.ADMIN, JSON.stringify(asPolygon(coordinates))]
+                                'INSERT INTO countries (name, code, area) VALUES (?, ?, ST_GeomFromGeoJSON(?))',
+                                [
+                                    feature.properties.name,
+                                    feature.properties.code,
+                                    JSON.stringify(toPolygon(coordinates)),
+                                ]
                             );
                         });
                     });
                 }
 
                 return db.runSql(
-                    'INSERT INTO countries (name, area) VALUES (?, ST_GeomFromGeoJSON(?))',
-                    [feature.properties.ADMIN, feature.geometry]
+                    'INSERT INTO countries (name, code, area) VALUES (?, ?, ST_GeomFromGeoJSON(?))',
+                    [feature.properties.name, feature.properties.code, feature.geometry]
                 );
             })
         );
