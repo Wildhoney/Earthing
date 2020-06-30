@@ -2,6 +2,8 @@ import React from 'react';
 import useAsync from 'react-use/lib/useAsync';
 import { camelizeKeys } from 'humps';
 import { SafeAreaView, Text, ScrollView } from 'react-native';
+import { API_URL } from '@env';
+import url from 'url-join';
 import Place from '../../Place';
 import { Model as PlaceModel } from '../../Place/types';
 import Loading from '../../Loading';
@@ -14,9 +16,9 @@ export default function App() {
     const heading = 90;
 
     const places: t.Places = useAsync(async () => {
-        const response = await fetch(
-            `http://localhost:5000/51.5074/0.1278/${heading}`
-        ).then((response) => response.json());
+        const response = await fetch(url(API_URL, `51.5074/0.1278/${heading}`)).then((response) =>
+            response.json()
+        );
         return camelizeKeys(response);
     });
 

@@ -7,7 +7,7 @@ export default StyleSheet.create({
         textTransform: 'uppercase',
         backgroundColor: 'darkgray',
         color: 'white',
-        borderRadius: 3,
+        borderRadius: 5,
         padding: 10,
     },
 });
