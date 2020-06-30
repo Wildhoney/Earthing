@@ -15,6 +15,7 @@
         "@types/url-join": "^4.0.0",
         "babel-plugin-dotenv-import": "^2.1.0",
         "expo": "~38.0.1",
+        "expo-sensors": "~9.0.1",
         "expo-status-bar": "^1.0.0",
         "humps": "^2.0.1",
         "numeral": "^2.0.6",
