@@ -5,7 +5,7 @@ export default StyleSheet.create({
         fontSize: 10,
         fontWeight: 'bold',
         textTransform: 'uppercase',
-        backgroundColor: 'darkgray',
+        backgroundColor: '#333',
         color: 'white',
         borderRadius: 5,
         padding: 10,
