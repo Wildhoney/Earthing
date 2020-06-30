@@ -8,12 +8,15 @@ import Loading from '../../Loading';
 import Error from '../../Error';
 import * as t from './types';
 import getStyles from './styles';
+import * as utils from './utils';
 
 export default function App() {
+    const heading = 90;
+
     const places: t.Places = useAsync(async () => {
-        const response = await fetch('http://localhost:5000/51.5074/0.1278/90').then((response) =>
-            response.json()
-        );
+        const response = await fetch(
+            `http://localhost:5000/51.5074/0.1278/${heading}`
+        ).then((response) => response.json());
         return camelizeKeys(response);
     });
 
@@ -28,13 +31,20 @@ export default function App() {
                     {places.error ? (
                         <Error />
                     ) : (
-                        <ScrollView style={style.scroll}>
-                            {places.value.countries
-                                .filter((place: PlaceModel) => place.minimumDistance > 0)
-                                .map((place: PlaceModel) => (
-                                    <Place key={place.name} model={place} />
-                                ))}
-                        </ScrollView>
+                        <>
+                            <Text style={style.description}>
+                                Walking {heading}˚ of your current location in a straight line would
+                                take you through the following countries:
+                            </Text>
+
+                            <ScrollView style={style.scroll}>
+                                {places.value.countries
+                                    .filter((place: PlaceModel) => place.minimumDistance > 0)
+                                    .map((place: PlaceModel) => (
+                                        <Place key={place.name} model={place} />
+                                    ))}
+                            </ScrollView>
+                        </>
                     )}
                 </>
             )}
