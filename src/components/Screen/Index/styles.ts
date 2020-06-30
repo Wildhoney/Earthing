@@ -1,20 +1,34 @@
 import { StyleSheet } from 'react-native';
-import * as t from './types';
 
 export default StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#121212',
         marginTop: 5,
     },
-    description: {
-        color: 'darkgray',
-        padding: 40,
-        paddingBottom: 20,
-        fontSize: 12,
-        lineHeight: 18,
+    background: {
+        flex: 1,
+        backgroundColor: '#121212',
+        paddingTop: 30,
+        paddingBottom: 30,
     },
     scroll: {
         flex: 1,
+        display: 'flex',
+    },
+    description: {
+        color: 'white',
+        paddingLeft: 30,
+        paddingRight: 30,
+        paddingBottom: 10,
+        fontSize: 12,
+        lineHeight: 18,
+    },
+    instruction: {
+        color: 'darkgray',
+        fontSize: 12,
+        fontStyle: 'italic',
+        lineHeight: 18,
+        paddingLeft: 30,
+        paddingRight: 30,
     },
 });

@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import useAsyncRetry from 'react-use/lib/useAsyncRetry';
 import useGetSet from 'react-use/lib/useGetSet';
 import { camelizeKeys } from 'humps';
-import { SafeAreaView, Text, ScrollView, Button, View } from 'react-native';
+import { SafeAreaView, Text, ScrollView, View, RefreshControl } from 'react-native';
 import { API_URL } from 'dotenv';
 import url from 'url-join';
 import { Magnetometer } from 'expo-sensors';
@@ -12,6 +12,7 @@ import Loading from '../../Loading';
 import Error from '../../Error';
 import * as t from './types';
 import style from './styles';
+import * as utils from './utils';
 
 Magnetometer.setUpdateInterval(1000);
 
@@ -27,45 +28,50 @@ export default function App() {
     }, []);
 
     useEffect(() => {
-        const subscription = Magnetometer.addListener((result) => setHeading(result.x));
+        const subscription = Magnetometer.addListener((result) =>
+            setHeading(utils.toHeading(result))
+        );
         return () => subscription.remove();
     }, []);
 
     return (
         <SafeAreaView style={style.container}>
-            {state.loading ? (
-                <Loading />
+            {state.error ? (
+                <Error />
             ) : (
-                <>
-                    {state.error ? (
-                        <Error />
-                    ) : (
-                        <ScrollView style={style.scroll}>
-                            <Text style={style.description}>
-                                Walking {Math.round(state.value.heading)}˚ from your current
-                                location in a straight line would take you through the following
-                                countries:
-                            </Text>
+                <ScrollView
+                    style={style.scroll}
+                    refreshControl={
+                        <RefreshControl refreshing={state.loading} onRefresh={state.retry} />
+                    }
+                >
+                    {state.value && (
+                        <View style={style.background}>
+                            <>
+                                <Text style={style.description}>
+                                    Walking {Math.abs(Math.round(state.value.heading))}˚
+                                    {utils.getDirection(state.value.heading)} from your current
+                                    location in a straight line would take you through the following
+                                    countries:
+                                </Text>
 
-                            <Button
-                                title={`Refresh List for ${Math.round(getHeading())}˚`}
-                                color="white"
-                                accessibilityLabel={`Refresh the list of countries for ${Math.round(
-                                    getHeading()
-                                )}˚`}
-                                onPress={state.retry}
-                            />
+                                <Text style={style.instruction}>
+                                    (Swipe down to update the list for{' '}
+                                    {Math.abs(Math.round(getHeading()))}˚{' '}
+                                    {utils.getDirection(getHeading())})
+                                </Text>
 
-                            <View style={{ marginTop: 20 }}>
-                                {state.value.list
-                                    .filter((place: PlaceModel) => place.minimumDistance > 0)
-                                    .map((place: PlaceModel) => (
-                                        <Place key={place.name} model={place} />
-                                    ))}
-                            </View>
-                        </ScrollView>
+                                <View style={{ marginTop: 20 }}>
+                                    {state.value.list
+                                        .filter((place: PlaceModel) => place.minimumDistance > 0)
+                                        .map((place: PlaceModel) => (
+                                            <Place key={place.name} model={place} />
+                                        ))}
+                                </View>
+                            </>
+                        </View>
                     )}
-                </>
+                </ScrollView>
             )}
         </SafeAreaView>
     );
