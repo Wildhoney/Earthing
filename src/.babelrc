@@ -1,7 +1,7 @@
 {
     "plugins": [
       ["dotenv-import", {
-        "moduleName": "@env",
+        "moduleName": "dotenv",
         "path": "../.env",
         "blacklist": null,
         "whitelist": null,

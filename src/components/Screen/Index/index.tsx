@@ -2,7 +2,7 @@ import React from 'react';
 import useAsync from 'react-use/lib/useAsync';
 import { camelizeKeys } from 'humps';
 import { SafeAreaView, Text, ScrollView } from 'react-native';
-import { API_URL } from '@env';
+import { API_URL } from 'dotenv';
 import url from 'url-join';
 import Place from '../../Place';
 import { Model as PlaceModel } from '../../Place/types';
@@ -10,7 +10,6 @@ import Loading from '../../Loading';
 import Error from '../../Error';
 import * as t from './types';
 import getStyles from './styles';
-import * as utils from './utils';
 
 export default function App() {
     const heading = 90;

@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Index from '../Screen/Index';
 import Title from '../Title';
+import Author from '../Author';
 
 const Stack = createStackNavigator();
 
@@ -16,6 +17,7 @@ export default function Layout() {
                     options={{
                         title: '',
                         headerLeft: () => <Title />,
+                        headerRight: () => <Author />,
                     }}
                 />
             </Stack.Navigator>
