@@ -2,6 +2,8 @@
 
 > Discover all of the countries along a walking route from your location by a given heading.
 
+<hr />
+
 <img src="media/screenshot.png" width="200" align="left" alt="Screenshot" />
 
 <img src="media/apple.png" width="150" align="left" alt="Apple Store" />
