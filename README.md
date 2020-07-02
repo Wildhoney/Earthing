@@ -5,7 +5,7 @@
 <img src="media/apple.png" width="150" align="left" alt="Apple Store" />
 <img src="media/google.png" width="150" align="left" alt="Google Store" />
 
-<img src="media/screenshot.jpg" alt="Screenshot" />
+<img src="media/screenshot.png" alt="Screenshot" />
 
 ## Setup
 
