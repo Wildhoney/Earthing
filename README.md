@@ -10,6 +10,7 @@
 <img src="media/screenshot.png" width="200" align="right" alt="Screenshot" />
 
 <br />
+<br />
 
 ## Setup
 
