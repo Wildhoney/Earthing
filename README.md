@@ -2,8 +2,6 @@
 
 > Discover all of the countries along a walking route from your location by a given heading.
 
-<hr />
-
 ![Travis](http://img.shields.io/travis/Wildhoney/Earthing.svg?style=for-the-badge)
 &nbsp;
 ![npm](http://img.shields.io/npm/v/earthing.svg?style=for-the-badge)
@@ -11,6 +9,8 @@
 ![License MIT](http://img.shields.io/badge/license-mit-lightgrey.svg?style=for-the-badge)
 &nbsp;
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=for-the-badge)](https://github.com/prettier/prettier)
+
+<hr />
 
 <img src="media/apple.png" width="150" align="left" alt="Apple Store" />
 <img src="media/google.png" width="150" align="left" alt="Google Store" />
