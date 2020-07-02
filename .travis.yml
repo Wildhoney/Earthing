@@ -8,7 +8,8 @@ addons:
         - "python3-pip"
 
 before_install:
-    - "pip3 install -r api/requirements.txt"
+    - pip install --upgrade pip
+    - pip3 install -r api/requirements.txt
 
 script:
     - yarn lint
