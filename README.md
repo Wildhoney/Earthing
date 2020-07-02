@@ -1,4 +1,4 @@
-![Earthing](media/logo.png)
+<img src="media/logo.png" width="250" align="left" alt="Earthing" />
 
 > Discover all of the countries along a walking route from your location by a given heading.
 
