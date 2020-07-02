@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import Layout from './components/Layout';
 
-export default function App() {
+export default function App(): ReactElement {
     return (
         <>
             <Layout />

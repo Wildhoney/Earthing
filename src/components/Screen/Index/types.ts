@@ -6,3 +6,5 @@ export type State = {
     retry: () => void;
     loading: boolean;
 };
+
+export type Directions = 'NE' | 'E' | 'SE' | 'S' | 'SW' | 'W' | 'NW' | 'N';

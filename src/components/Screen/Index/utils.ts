@@ -47,7 +47,7 @@ export function useHeading(): () => number | null {
     return getHeading;
 }
 
-export function getDirection(degree: number): 'NE' | 'E' | 'SE' | 'S' | 'SW' | 'W' | 'NW' | 'N' {
+export function getDirection(degree: number): t.Directions {
     if (degree >= 22.5 && degree < 67.5) {
         return 'NE';
     } else if (degree >= 67.5 && degree < 112.5) {

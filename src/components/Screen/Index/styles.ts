@@ -7,7 +7,6 @@ export default StyleSheet.create({
     },
     background: {
         flex: 1,
-        // backgroundColor: '#121212',
         paddingTop: 30,
         paddingBottom: 30,
     },
@@ -16,7 +15,6 @@ export default StyleSheet.create({
         display: 'flex',
     },
     description: {
-        // color: 'white',
         paddingLeft: 30,
         paddingRight: 30,
         paddingBottom: 10,
