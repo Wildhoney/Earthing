@@ -1,4 +1,4 @@
-<img src="media/logo.png" width="250" align="left" alt="Earthing" />
+<img src="media/logo.png" width="250" alt="Earthing" />
 
 > Discover all of the countries along a walking route from your location by a given heading.
 
