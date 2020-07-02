@@ -2,11 +2,14 @@ import useMount from 'react-use/lib/useMount';
 import useGetSet from 'react-use/lib/useGetSet';
 import useAsyncRetry from 'react-use/lib/useAsyncRetry';
 import { camelizeKeys } from 'humps';
+// @ts-ignore
 import { API_URL } from 'dotenv';
 import url from 'url-join';
 import * as Location from 'expo-location';
+import { Model } from '../../Place/types';
+import * as t from './types';
 
-export function useResult(getHeading) {
+export function useResult(getHeading: () => number | null): t.State {
     return useAsyncRetry(async () => {
         const { status } = await Location.requestPermissionsAsync();
         if (status !== 'granted') throw new Error('Permission denied.');
@@ -26,11 +29,11 @@ export function useResult(getHeading) {
             url(API_URL, `${latitude}/${longitude}/${heading}`)
         ).then((response) => response.json());
 
-        return { list: camelizeKeys(response.countries), heading };
+        return { list: camelizeKeys(response.countries) as Model[], heading };
     }, []);
 }
 
-export function useHeading() {
+export function useHeading(): () => number | null {
     const [getHeading, setHeading] = useGetSet<number | null>(null);
 
     useMount(async () => {
@@ -44,7 +47,7 @@ export function useHeading() {
     return getHeading;
 }
 
-export function getDirection(degree: number): string {
+export function getDirection(degree: number): 'NE' | 'E' | 'SE' | 'S' | 'SW' | 'W' | 'NW' | 'N' {
     if (degree >= 22.5 && degree < 67.5) {
         return 'NE';
     } else if (degree >= 67.5 && degree < 112.5) {

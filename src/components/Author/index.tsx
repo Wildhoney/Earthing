@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { Text, TouchableOpacity, Linking } from 'react-native';
-import style from './styles';
+import styles from './styles';
 
 const url = 'https://github.com/Wildhoney';
 
-export default function Author() {
+export default function Author(): ReactElement {
     const handleClick = async () => {
         try {
             await Linking.canOpenURL(url);
@@ -14,7 +14,7 @@ export default function Author() {
 
     return (
         <TouchableOpacity onPress={handleClick}>
-            <Text style={style.container}>{url}</Text>
+            <Text style={styles.container}>{url}</Text>
         </TouchableOpacity>
     );
 }

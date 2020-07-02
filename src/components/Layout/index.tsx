@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Index from '../Screen/Index';
@@ -7,7 +7,7 @@ import Author from '../Author';
 
 const Stack = createStackNavigator();
 
-export default function Layout() {
+export default function Layout(): ReactElement {
     return (
         <NavigationContainer>
             <Stack.Navigator>

@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { Text } from 'react-native';
-import style from './styles';
+import styles from './styles';
 
-export default function Title() {
-    return <Text style={style.container}>Earthing</Text>;
+export default function Title(): ReactElement {
+    return <Text style={styles.container}>Earthing</Text>;
 }

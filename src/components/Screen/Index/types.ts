@@ -1,3 +1,8 @@
-import { AsyncState } from 'react-use/lib/useAsync';
+import { Model } from '../../Place/types';
 
-export type Places = AsyncState<any>;
+export type State = {
+    value?: { list: Model[]; heading: number };
+    error?: Error;
+    retry: () => void;
+    loading: boolean;
+};

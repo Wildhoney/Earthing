@@ -1,34 +1,33 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { SafeAreaView, Text, ScrollView, View, RefreshControl } from 'react-native';
 import { Magnetometer } from 'expo-sensors';
 import Place from '../../Place';
-import { Model as PlaceModel } from '../../Place/types';
 import Error from '../../Error';
-import style from './styles';
+import styles from './styles';
 import * as utils from './utils';
 
 Magnetometer.setUpdateInterval(1000);
 
-export default function App() {
+export default function App(): ReactElement {
     const getHeading = utils.useHeading();
     const result = utils.useResult(getHeading);
     const heading = getHeading();
 
     return (
-        <SafeAreaView style={style.container}>
+        <SafeAreaView style={styles.container}>
             {result.error ? (
                 <Error />
             ) : (
                 <ScrollView
-                    style={style.scroll}
+                    style={styles.scroll}
                     refreshControl={
                         <RefreshControl refreshing={result.loading} onRefresh={result.retry} />
                     }
                 >
                     {result.value && (
-                        <View style={style.background}>
+                        <View style={styles.background}>
                             <>
-                                <Text style={style.description}>
+                                <Text style={styles.description}>
                                     Walking {Math.abs(Math.round(result.value.heading))}˚
                                     {utils.getDirection(result.value.heading)} from your current
                                     location in a straight line would take you through the following
@@ -36,7 +35,7 @@ export default function App() {
                                 </Text>
 
                                 {heading != null && (
-                                    <Text style={style.instruction}>
+                                    <Text style={styles.instruction}>
                                         Swipe down to update the list for{' '}
                                         {Math.abs(Math.round(heading))}˚{' '}
                                         {utils.getDirection(heading)}
@@ -45,8 +44,8 @@ export default function App() {
 
                                 <View style={{ marginTop: 20 }}>
                                     {result.value.list
-                                        .filter((place: PlaceModel) => place.minimumDistance > 0)
-                                        .map((place: PlaceModel) => (
+                                        .filter((place) => place.minimumDistance > 0)
+                                        .map((place) => (
                                             <Place key={place.name} model={place} />
                                         ))}
                                 </View>

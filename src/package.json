@@ -1,5 +1,6 @@
 {
     "main": "node_modules/expo/AppEntry.js",
+    "type": "module",
     "scripts": {
         "start": "expo start",
         "android": "expo start --android",
@@ -12,6 +13,7 @@
         "@react-navigation/native": "^5.6.1",
         "@react-navigation/stack": "^5.6.2",
         "@types/humps": "^2.0.0",
+        "@types/numeral": "^0.0.28",
         "@types/url-join": "^4.0.0",
         "babel-plugin-dotenv-import": "^2.1.0",
         "expo": "~38.0.8",
@@ -32,6 +34,7 @@
         "@babel/core": "^7.10.4",
         "@types/react": "~16.9.41",
         "@types/react-native": "~0.62.16",
+        "tsc": "^1.20150623.0",
         "typescript": "~3.9.6"
     },
     "private": true
