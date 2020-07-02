@@ -2,7 +2,6 @@
     "name": "earthing",
     "version": "0.1.0",
     "main": "api/index.py",
-    "type": "module",
     "repository": "https://github.com/Wildhoney/Earthing",
     "author": "Adam Timberlake <adam.timberlake@gmail.com>",
     "license": "MIT",
