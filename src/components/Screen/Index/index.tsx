@@ -12,6 +12,7 @@ Magnetometer.setUpdateInterval(1000);
 export default function App() {
     const getHeading = utils.useHeading();
     const result = utils.useResult(getHeading);
+    const heading = getHeading();
 
     return (
         <SafeAreaView style={style.container}>
@@ -34,11 +35,11 @@ export default function App() {
                                     countries:
                                 </Text>
 
-                                {getHeading() != null && (
+                                {heading != null && (
                                     <Text style={style.instruction}>
-                                        (Swipe down to update the list for{' '}
-                                        {Math.abs(Math.round(getHeading()))}˚{' '}
-                                        {utils.getDirection(getHeading())}
+                                        Swipe down to update the list for{' '}
+                                        {Math.abs(Math.round(heading))}˚{' '}
+                                        {utils.getDirection(heading)}
                                     </Text>
                                 )}
 

@@ -11,11 +11,13 @@ export function useResult(getHeading) {
         const { status } = await Location.requestPermissionsAsync();
         if (status !== 'granted') throw new Error('Permission denied.');
 
-        // const { trueHeading, magHeading } =
-        //     heading != null ? { trueHeading: heading } : await Location.getHeadingAsync();
-        // const heading = trueHeading === -1 ? magHeading : trueHeading;
+        const heading =
+            getHeading() ??
+            (await (async () => {
+                const { trueHeading, magHeading } = await Location.getHeadingAsync();
+                return trueHeading === -1 ? magHeading : trueHeading;
+            })());
 
-        const heading = getHeading();
         const {
             coords: { latitude, longitude },
         } = await Location.getCurrentPositionAsync();
@@ -29,7 +31,7 @@ export function useResult(getHeading) {
 }
 
 export function useHeading() {
-    const [getHeading, setHeading] = useGetSet(null);
+    const [getHeading, setHeading] = useGetSet<number | null>(null);
 
     useMount(async () => {
         const heading = await Location.watchHeadingAsync(({ trueHeading, magHeading }) =>
