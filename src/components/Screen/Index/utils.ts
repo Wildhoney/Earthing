@@ -1,5 +1,4 @@
 import useMount from 'react-use/lib/useMount';
-import useGetSet from 'react-use/lib/useGetSet';
 import useAsyncRetry from 'react-use/lib/useAsyncRetry';
 import { camelizeKeys } from 'humps';
 // @ts-ignore
@@ -8,43 +7,46 @@ import url from 'url-join';
 import * as Location from 'expo-location';
 import { Model } from '../../Place/types';
 import * as t from './types';
+import { useState } from 'react';
 
-export function useResult(getHeading: () => number | null): t.State {
+export function useResult(): t.State {
     return useAsyncRetry(async () => {
-        const { status } = await Location.requestPermissionsAsync();
-        if (status !== 'granted') throw new Error('Permission denied.');
+        if (!(await requestPermission())) throw new Error('Permission denied.');
 
-        const heading =
-            getHeading() ??
-            (await (async () => {
-                const { trueHeading, magHeading } = await Location.getHeadingAsync();
-                return trueHeading === -1 ? magHeading : trueHeading;
-            })());
-
-        const {
-            coords: { latitude, longitude },
-        } = await Location.getCurrentPositionAsync();
+        const heading = getHeading(await Location.getHeadingAsync());
+        const { coords } = await Location.getCurrentPositionAsync();
 
         const response = await fetch(
-            url(API_URL, `${latitude}/${longitude}/${heading}`)
+            url(API_URL, `${coords.latitude}/${coords.longitude}/${heading}`)
         ).then((response) => response.json());
 
         return { list: camelizeKeys(response.countries) as Model[], heading };
     }, []);
 }
 
-export function useHeading(): () => number | null {
-    const [getHeading, setHeading] = useGetSet<number | null>(null);
+export function useHeading(): number | null {
+    const [heading, setHeading] = useState<number | null>(null);
 
     useMount(async () => {
-        const heading = await Location.watchHeadingAsync(({ trueHeading, magHeading }) =>
-            setHeading(trueHeading === -1 ? magHeading : trueHeading)
+        if (!(await requestPermission())) return;
+
+        const heading = await Location.watchHeadingAsync((heading) =>
+            setHeading(getHeading(heading))
         );
 
         return () => heading.remove();
     });
 
-    return getHeading;
+    return heading;
+}
+
+async function requestPermission(): Promise<boolean> {
+    const { status } = await Location.requestPermissionsAsync();
+    return status === 'granted';
+}
+
+function getHeading({ trueHeading, magHeading }: Location.HeadingData): number {
+    return trueHeading === -1 ? magHeading : trueHeading;
 }
 
 export function getDirection(degree: number): t.Directions {

@@ -9,9 +9,8 @@ import * as utils from './utils';
 Magnetometer.setUpdateInterval(1000);
 
 export default function App(): ReactElement {
-    const getHeading = utils.useHeading();
-    const result = utils.useResult(getHeading);
-    const heading = getHeading();
+    const result = utils.useResult();
+    const heading = utils.useHeading();
 
     return (
         <SafeAreaView style={styles.container}>
